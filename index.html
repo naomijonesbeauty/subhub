@@ -1,708 +1,541 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UEFA.com - The official website for European football</title>
-    <!-- Tailwind CSS CDN -->
+    <title>UIC Technology Solutions API Portal | ts.api.uic.edu</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        uefa: {
-                            navy: '#0b1320',
-                            card: '#152033',
-                            cardHover: '#1c2b45',
-                            accent: '#0052cc',
-                            blue: '#00b2ff',
-                            text: '#f1f5f9',
-                            muted: '#94a3b8',
-                            border: '#1e2d4a',
-                            live: '#ef4444'
+                        uic: {
+                            red: '#D50032',
+                            navy: '#001E62',
+                            cyan: '#007FA5',
+                            darkCyan: '#005f7c',
+                            grayBg: '#F8F8F8',
+                            darkText: '#343333',
+                            border: '#E2E8F0'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                        sans: ['Theinhardt', 'Azeret Mono', 'Arial', 'sans-serif'],
+                        mono: ['Azeret Mono', 'monospace']
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome icons -->
+    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom Scrollbars */
+        @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&display=swap');
+
+        /* UIC Custom Typography and Utilities */
+        body {
+            background-color: #F8F8F8;
+            color: #343333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .uic-headline {
+            font-family: 'Azeret Mono', 'Arial Black', sans-serif;
+        }
+
+        .uic-red-bar {
+            border-top: 5px solid #D50032;
+        }
+
+        .uic-red-border-card {
+            border-top: 8px solid #D50032;
+        }
+
+        /* Scrollbar Styling */
         ::-webkit-scrollbar {
-            height: 6px;
-            width: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0b1320;
+            background: #001E62;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e2d4a;
-            border-radius: 9999px;
+            background: #007FA5;
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #00b2ff;
+            background: #D50032;
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .match-card {
-            min-width: 210px;
+
+        /* Nav Dropdown Animations */
+        .dropdown-menu {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
-<body class="bg-uefa-navy text-uefa-text font-sans antialiased min-h-screen flex flex-col selection:bg-uefa-blue selection:text-uefa-navy">
+<body class="flex flex-col min-h-screen bg-uic-grayBg antialiased">
 
-    <!-- TOP BRANDING & QUICK NAVIGATION BANNER -->
-    <header class="w-full bg-[#070c16] border-b border-uefa-border text-xs z-50">
-        <div class="max-w-7xl mx-auto px-4 h-10 flex items-center justify-between">
-            <!-- Left: Brand Logo & Main Network Links -->
-            <div class="flex items-center space-x-6">
-                <a href="#" class="flex items-center gap-2 font-black tracking-widest text-white text-base hover:text-uefa-blue transition">
-                    <span class="bg-gradient-to-r from-uefa-blue to-uefa-accent text-transparent bg-clip-text">UEFA</span><span class="text-xs font-normal opacity-70">.COM</span>
-                </a>
-                <nav class="hidden md:flex items-center space-x-4 text-uefa-muted font-medium">
-                    <a href="#" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-play text-xs text-uefa-blue"></i> UEFA.tv</a>
-                    <a href="#" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-gamepad text-xs"></i> UEFA Gaming</a>
-                    <a href="#" class="hover:text-white transition">Store</a>
-                    <a href="#" class="hover:text-white transition">Tickets</a>
-                    <a href="#" class="hover:text-white transition">Match Calendar</a>
-                    <a href="#" class="hover:text-white transition">UEFA Rankings</a>
-                </nav>
-            </div>
+    <!-- TOP SKIP TO NAVIGATION (ACCESSIBILITY) -->
+    <nav id="id-skip-to" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-uic-navy focus:text-white focus:top-0 focus:left-4 font-bold text-xs">
+        <a href="#main-content">Skip to Main Content</a>
+    </nav>
 
-            <!-- Right: Search & User Login -->
-            <div class="flex items-center space-x-4">
-                <button class="text-uefa-muted hover:text-white transition p-1" title="Search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-                <a href="#" class="bg-uefa-accent/30 hover:bg-uefa-accent text-uefa-blue hover:text-white px-3 py-1 rounded-full text-xs font-semibold border border-uefa-blue/40 transition">
-                    <i class="fa-regular fa-user mr-1"></i> Sign In
-                </a>
+    <!-- HEADER / NAVIGATION -->
+    <header class="relative z-40 bg-uic-navy text-white border-b-4 border-uic-red">
+        <!-- Top Utility Bar -->
+        <div class="bg-black/20 text-xs py-2 border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+                <div class="flex items-center space-x-3 text-slate-300">
+                    <span class="inline-flex items-center gap-1.5 font-mono text-[11px] bg-uic-cyan/30 text-uic-cyan px-2 py-0.5 rounded border border-uic-cyan/40">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        ts.api.uic.edu (v2.4.0)
+                    </span>
+                    <span class="hidden md:inline text-slate-400">|</span>
+                    <span class="hidden md:inline">Technology Solutions Developer Portal</span>
+                </div>
+                <div class="flex items-center space-x-4 text-slate-200 text-[11px] font-semibold">
+                    <a href="https://academics.uic.edu" target="_blank" class="hover:text-uic-red transition">UIC.edu</a>
+                    <a href="https://it.uic.edu" target="_blank" class="hover:text-uic-red transition">Tech Solutions (IT)</a>
+                    <a href="#status" class="hover:text-uic-red transition">API Status</a>
+                    <a href="#auth" class="hover:text-uic-red transition">Authentication</a>
+                </div>
             </div>
         </div>
-    </header>
 
-    <!-- STICKY PRIMARY NAVIGATION -->
-    <nav class="sticky top-0 w-full bg-uefa-navy/95 backdrop-blur-md border-b border-uefa-border z-40 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
-            <div class="flex items-center space-x-1 sm:space-x-6 overflow-x-auto hide-scrollbar py-2 text-sm font-semibold whitespace-nowrap">
-                <a href="#" class="text-uefa-blue border-b-2 border-uefa-blue py-3 px-2 flex items-center gap-1">
-                    Home
+        <!-- Main Branding & Primary Navigation Bar -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <!-- UIC Circle Logo & Site Title -->
+            <div class="flex items-center space-x-4">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 bg-uic-red rounded-full flex items-center justify-center text-white font-black text-2xl tracking-tighter shadow-md group-hover:scale-105 transition transform">
+                        UIC
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase tracking-widest font-bold text-slate-300 leading-none">University of Illinois Chicago</div>
+                        <div class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                            <span>Technology Solutions</span>
+                            <span class="text-uic-cyan font-mono text-sm font-bold">API Gateway</span>
+                        </div>
+                    </div>
                 </a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">About</a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">National associations</a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">Running competitions</a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">Development</a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">Sustainability</a>
-                <a href="#" class="text-uefa-muted hover:text-white py-3 px-2 transition">News & media</a>
             </div>
-            
-            <!-- Mobile Menu Toggle Button -->
-            <button id="mobileMenuBtn" class="md:hidden text-uefa-muted hover:text-white p-2">
+
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center space-x-6 text-xs uppercase font-bold tracking-wider">
+                <!-- Dropdown: Core APIs -->
+                <div class="relative group py-2">
+                    <button class="flex items-center gap-1 hover:text-uic-cyan transition py-1">
+                        APIs & Services <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="dropdown-menu absolute left-0 top-full w-64 bg-white text-uic-darkText border border-uic-border rounded-lg shadow-2xl p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 text-xs normal-case space-y-1 font-sans">
+                        <div class="text-[10px] font-bold text-uic-navy uppercase tracking-wider px-2 py-1 border-b">Core Campus Datasets</div>
+                        <a href="#directory-api" class="block p-2 rounded hover:bg-slate-100 transition font-medium">Directory & Auth API</a>
+                        <a href="#courses-api" class="block p-2 rounded hover:bg-slate-100 transition font-medium">Academic & Course Catalog</a>
+                        <a href="#campus-api" class="block p-2 rounded hover:bg-slate-100 transition font-medium">Campus Infrastructure & Maps</a>
+                        <a href="#health-api" class="block p-2 rounded hover:bg-slate-100 transition font-medium">UI Health & Research Data</a>
+                    </div>
+                </div>
+
+                <!-- Link: Docs -->
+                <a href="#documentation" class="hover:text-uic-cyan transition">Documentation</a>
+                
+                <!-- Link: SDKs -->
+                <a href="#sdks" class="hover:text-uic-cyan transition">SDKs & Tools</a>
+
+                <!-- Link: Status -->
+                <a href="#status" class="hover:text-uic-cyan transition">System Status</a>
+
+                <!-- CTA Button -->
+                <a href="#get-key" class="bg-uic-red hover:bg-red-700 text-white font-extrabold px-4 py-2 rounded text-xs transition shadow-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-key text-[10px]"></i> Get API Key
+                </a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" class="lg:hidden w-10 h-10 rounded bg-white/10 flex items-center justify-center text-white hover:bg-uic-red transition">
                 <i class="fa-solid fa-bars text-lg"></i>
             </button>
         </div>
-        
-        <!-- Mobile Dropdown Navigation -->
-        <div id="mobileMenu" class="hidden md:hidden bg-uefa-card border-b border-uefa-border px-4 py-3 space-y-2 text-sm">
-            <a href="#" class="block py-1 text-uefa-blue font-bold">UEFA.tv</a>
-            <a href="#" class="block py-1 text-uefa-muted hover:text-white">UEFA Gaming</a>
-            <a href="#" class="block py-1 text-uefa-muted hover:text-white">Store & Tickets</a>
-            <a href="#" class="block py-1 text-uefa-muted hover:text-white">Match Calendar</a>
-            <a href="#" class="block py-1 text-uefa-muted hover:text-white">UEFA Rankings</a>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-uic-navy border-t border-white/10 px-6 py-4 space-y-3 text-sm font-semibold">
+            <a href="#documentation" class="block py-2 text-slate-200 border-b border-white/10">APIs & Services</a>
+            <a href="#documentation" class="block py-2 text-slate-200 border-b border-white/10">Documentation</a>
+            <a href="#status" class="block py-2 text-slate-200 border-b border-white/10">API Status</a>
+            <a href="#get-key" class="block text-center bg-uic-red text-white py-2.5 rounded font-bold mt-3">Request Developer Access</a>
         </div>
-    </nav>
+    </header>
 
-    <!-- MATCHES & DRAWS LIVE RAIL -->
-    <section class="w-full bg-[#0a101c] border-b border-uefa-border py-3">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-uefa-blue flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-uefa-live animate-pulse"></span> Matches & Draws
-                    </span>
-                    <span class="text-xs text-uefa-muted">Matchday 4</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button id="scrollMatchLeft" class="w-7 h-7 rounded-full bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border flex items-center justify-center text-xs text-uefa-muted hover:text-white transition">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button id="scrollMatchRight" class="w-7 h-7 rounded-full bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border flex items-center justify-center text-xs text-uefa-muted hover:text-white transition">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Scrollable match rail -->
-            <div id="matchRail" class="flex gap-3 overflow-x-auto hide-scrollbar scroll-smooth py-1">
-                <!-- Match 1 -->
-                <div class="match-card bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-lg p-3 flex-shrink-0 cursor-pointer transition">
-                    <div class="flex justify-between items-center text-[10px] text-uefa-muted font-bold mb-2">
-                        <span class="text-uefa-blue">UEFA Champions League</span>
-                        <span class="text-uefa-live font-bold">FT</span>
+    <!-- HERO BANNER SECTION -->
+    <section class="relative bg-uic-navy text-white overflow-hidden py-16 md:py-24 border-b border-uic-border">
+        <!-- UIC Grid / Background Graphic -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#007FA5_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-uic-cyan/20 border border-uic-cyan/40 px-3 py-1 rounded-full text-xs font-mono font-bold text-uic-cyan">
+                        <i class="fa-solid fa-server"></i> ts.api.uic.edu Developer Portal
                     </div>
-                    <div class="space-y-1.5 text-xs font-semibold">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-red-600 rounded-full flex items-center justify-center text-[9px]">FCB</span> Bayern</span>
-                            <span class="font-bold">2</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-red-800 rounded-full flex items-center justify-center text-[9px]">ARS</span> Arsenal</span>
-                            <span class="font-bold">1</span>
-                        </div>
+
+                    <h1 class="uic-headline text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-white">
+                        Powering UIC Digital Solutions
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                        Access official University of Illinois Chicago REST APIs, GraphQL endpoints, real-time webhooks, and identity integrations for students, faculty, researchers, and campus developers.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#documentation" class="bg-uic-red hover:bg-red-700 text-white font-extrabold px-6 py-3 rounded-lg text-sm transition shadow-lg flex items-center gap-2">
+                            Explore API Reference <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="#try-console" class="bg-uic-cyan hover:bg-uic-darkCyan text-white font-extrabold px-6 py-3 rounded-lg text-sm transition shadow-lg flex items-center gap-2">
+                            Launch Sandbox Console <i class="fa-solid fa-terminal text-xs"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Match 2 -->
-                <div class="match-card bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-lg p-3 flex-shrink-0 cursor-pointer transition">
-                    <div class="flex justify-between items-center text-[10px] text-uefa-muted font-bold mb-2">
-                        <span class="text-uefa-blue">UEFA Champions League</span>
-                        <span class="text-uefa-live font-bold animate-pulse">78'</span>
-                    </div>
-                    <div class="space-y-1.5 text-xs font-semibold">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-white text-black font-black rounded-full flex items-center justify-center text-[9px]">RMA</span> Real Madrid</span>
-                            <span class="font-bold text-uefa-blue">3</span>
+                <!-- Right Live Endpoint Interactive Card -->
+                <div class="lg:col-span-5">
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden font-mono text-xs">
+                        <!-- Code Header -->
+                        <div class="bg-slate-800 px-4 py-3 flex items-center justify-between border-b border-slate-700 text-slate-300">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                                <span class="ml-2 font-bold text-white text-[11px]">GET /v2/directory/person</span>
+                            </div>
+                            <span class="text-emerald-400 font-bold">200 OK</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-[9px]">PSG</span> PSG</span>
-                            <span class="font-bold">1</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Match 3 -->
-                <div class="match-card bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-lg p-3 flex-shrink-0 cursor-pointer transition">
-                    <div class="flex justify-between items-center text-[10px] text-uefa-muted font-bold mb-2">
-                        <span class="text-amber-400">UEFA Europa League</span>
-                        <span>21:00 CET</span>
-                    </div>
-                    <div class="space-y-1.5 text-xs font-semibold">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-black text-amber-400 rounded-full flex items-center justify-center text-[9px]">ROM</span> AS Roma</span>
-                            <span class="text-uefa-muted font-normal">-</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-green-700 rounded-full flex items-center justify-center text-[9px]">BET</span> Real Betis</span>
-                            <span class="text-uefa-muted font-normal">-</span>
+                        <!-- Code Body -->
+                        <div class="p-4 space-y-3 text-slate-200 overflow-x-auto">
+                            <div class="text-slate-400">// Request Example</div>
+                            <div class="text-uic-cyan font-semibold">
+                                curl -X GET "https://ts.api.uic.edu/v2/directory/person?netid=flames" \<br>
+                                &nbsp;&nbsp;-H "Authorization: Bearer uic_live_9f83a0a1"
+                            </div>
+
+                            <div class="text-slate-400 pt-2">// Response payload</div>
+                            <pre class="text-emerald-300 bg-black/40 p-3 rounded border border-slate-800 text-[11px] leading-relaxed">
+{
+  <span class="text-sky-300">"status"</span>: <span class="text-amber-300">"success"</span>,
+  <span class="text-sky-300">"campus"</span>: <span class="text-amber-300">"University of Illinois Chicago"</span>,
+  <span class="text-sky-300">"data"</span>: {
+    <span class="text-sky-300">"netid"</span>: <span class="text-amber-300">"flames"</span>,
+    <span class="text-sky-300">"role"</span>: <span class="text-amber-300">"Student"</span>,
+    <span class="text-sky-300">"college"</span>: <span class="text-amber-300">"College of Engineering"</span>,
+    <span class="text-sky-300">"department"</span>: <span class="text-amber-300">"Computer Science"</span>
+  }
+}</pre>
                         </div>
                     </div>
                 </div>
 
-                <!-- Match 4 -->
-                <div class="match-card bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-lg p-3 flex-shrink-0 cursor-pointer transition">
-                    <div class="flex justify-between items-center text-[10px] text-uefa-muted font-bold mb-2">
-                        <span class="text-pink-400">UWCL</span>
-                        <span class="text-uefa-live font-bold">FT</span>
-                    </div>
-                    <div class="space-y-1.5 text-xs font-semibold">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-[#a50044] text-amber-300 rounded-full flex items-center justify-center text-[9px]">BAR</span> Barcelona</span>
-                            <span class="font-bold">4</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-blue-900 rounded-full flex items-center justify-center text-[9px]">CHE</span> Chelsea</span>
-                            <span class="font-bold">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Match 5 -->
-                <div class="match-card bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-lg p-3 flex-shrink-0 cursor-pointer transition">
-                    <div class="flex justify-between items-center text-[10px] text-uefa-muted font-bold mb-2">
-                        <span class="text-green-400">UEFA Conference League</span>
-                        <span>Tomorrow</span>
-                    </div>
-                    <div class="space-y-1.5 text-xs font-semibold">
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-purple-700 rounded-full flex items-center justify-center text-[9px]">FIO</span> Fiorentina</span>
-                            <span class="text-uefa-muted font-normal">-</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-[9px]">GNT</span> Gent</span>
-                            <span class="text-uefa-muted font-normal">-</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- HERO CAROUSEL SECTION -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 space-y-10">
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="main-content" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 w-full -mt-8 relative z-30 pb-16">
         
-        <section class="relative rounded-2xl overflow-hidden bg-uefa-card border border-uefa-border shadow-2xl">
-            <!-- Slides Container -->
-            <div id="heroCarousel" class="relative min-h-[380px] md:min-h-[460px]">
+        <!-- FAST FACTS & METRICS CARD (MATCHING INDEX_4 FAST FACTS WRAPPER) -->
+        <div class="bg-white rounded-xl shadow-xl uic-red-border-card mb-12 p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-slate-200">
                 
-                <!-- Slide 1 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-100 flex flex-col justify-end p-6 md:p-10 bg-gradient-to-t from-uefa-navy via-uefa-navy/60 to-transparent">
-                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80" alt="Champions League" class="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-overlay opacity-50" onerror="this.src='https://placehold.co/1200x500/0b1320/00b2ff?text=UEFA+Champions+League'">
-                    <span class="bg-uefa-blue text-uefa-navy text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md w-max mb-3">UEFA Champions League</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl mb-2">Champions League: Matchday 4 build-up & key storylines</h1>
-                    <p class="text-uefa-muted text-sm md:text-base max-w-2xl mb-4 line-clamp-2">Get the latest squad updates, tactical breakdowns, and press conference quotes as Europe's elite prepare for another pivotal week of European football.</p>
-                    <div>
-                        <a href="#" class="inline-flex items-center gap-2 bg-uefa-accent hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition transform hover:-translate-y-0.5">
-                            Read Preview <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </a>
-                    </div>
+                <!-- Fact 1 -->
+                <div class="pt-4 md:pt-0 md:px-4 space-y-1">
+                    <div class="text-4xl md:text-5xl font-black text-uic-navy uic-headline">99.98%</div>
+                    <div class="text-sm font-bold uppercase text-uic-red tracking-wider">Uptime SLA</div>
+                    <p class="text-xs text-slate-600">Enterprise grade reliability across UIC data centers</p>
                 </div>
 
-                <!-- Slide 2 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none flex flex-col justify-end p-6 md:p-10 bg-gradient-to-t from-uefa-navy via-uefa-navy/60 to-transparent">
-                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80" alt="Referee Guide" class="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-overlay opacity-50" onerror="this.src='https://placehold.co/1200x500/0b1320/00b2ff?text=Referee+Decisions'">
-                    <span class="bg-amber-400 text-black text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md w-max mb-3">Refereeing & Laws</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl mb-2">Clear Line: A guide to referee decisions in European football</h1>
-                    <p class="text-uefa-muted text-sm md:text-base max-w-2xl mb-4 line-clamp-2">UEFA's Chief Referees Officer breaks down recent VAR rulings, handball interpretations, and how technology supports fair play on the pitch.</p>
-                    <div>
-                        <a href="#" class="inline-flex items-center gap-2 bg-uefa-accent hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition transform hover:-translate-y-0.5">
-                            Watch Analysis <i class="fa-solid fa-play text-xs"></i>
-                        </a>
-                    </div>
+                <!-- Fact 2 -->
+                <div class="pt-4 md:pt-0 md:px-4 space-y-1">
+                    <div class="text-4xl md:text-5xl font-black text-uic-navy uic-headline">15M+</div>
+                    <div class="text-sm font-bold uppercase text-uic-red tracking-wider">Monthly API Calls</div>
+                    <p class="text-xs text-slate-600">Serving 37,000+ students and 12,000+ faculty/staff</p>
                 </div>
 
-                <!-- Slide 3 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none flex flex-col justify-end p-6 md:p-10 bg-gradient-to-t from-uefa-navy via-uefa-navy/60 to-transparent">
-                    <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80" alt="Grassroots Investment" class="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-overlay opacity-50" onerror="this.src='https://placehold.co/1200x500/0b1320/00b2ff?text=UEFA+Investment'">
-                    <span class="bg-emerald-500 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md w-max mb-3">About UEFA</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl mb-2">We reinvest 97.5% of our net revenue back into the game</h1>
-                    <p class="text-uefa-muted text-sm md:text-base max-w-2xl mb-4 line-clamp-2">Discover how financial redistribution fuels national associations, women's football development, training facilities, and youth academies across 55 member nations.</p>
-                    <div>
-                        <a href="#" class="inline-flex items-center gap-2 bg-uefa-accent hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition transform hover:-translate-y-0.5">
-                            Explore Report <i class="fa-solid fa-chart-pie text-xs"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Slide 4 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none flex flex-col justify-end p-6 md:p-10 bg-gradient-to-t from-uefa-navy via-uefa-navy/60 to-transparent">
-                    <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=1200&q=80" alt="Sustainability" class="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-overlay opacity-50" onerror="this.src='https://placehold.co/1200x500/0b1320/00b2ff?text=ESG+Strategy'">
-                    <span class="bg-green-600 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md w-max mb-3">ESG Strategy</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl mb-2">We're creating a sustainable future for European football</h1>
-                    <p class="text-uefa-muted text-sm md:text-base max-w-2xl mb-4 line-clamp-2">From eco-friendly stadium initiatives to reducing travel emissions across European competitions, UEFA advances climate action through sports leadership.</p>
-                    <div>
-                        <a href="#" class="inline-flex items-center gap-2 bg-uefa-accent hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition transform hover:-translate-y-0.5">
-                            Our ESG Commitments <i class="fa-solid fa-leaf text-xs"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Slide 5 -->
-                <div class="hero-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none flex flex-col justify-end p-6 md:p-10 bg-gradient-to-t from-uefa-navy via-uefa-navy/60 to-transparent">
-                    <img src="https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?auto=format&fit=crop&w=1200&q=80" alt="Foundation for Children" class="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-overlay opacity-50" onerror="this.src='https://placehold.co/1200x500/0b1320/00b2ff?text=UEFA+Foundation'">
-                    <span class="bg-purple-600 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-md w-max mb-3">UEFA Foundation</span>
-                    <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl mb-2">How the UEFA Foundation supports children all over the world</h1>
-                    <p class="text-uefa-muted text-sm md:text-base max-w-2xl mb-4 line-clamp-2">Using the power of football to defend rights, grant education access, and build safe play environments for vulnerable youth across conflict zones and rural regions.</p>
-                    <div>
-                        <a href="#" class="inline-flex items-center gap-2 bg-uefa-accent hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition transform hover:-translate-y-0.5">
-                            Learn More <i class="fa-solid fa-heart text-xs"></i>
-                        </a>
-                    </div>
+                <!-- Fact 3 -->
+                <div class="pt-4 md:pt-0 md:px-4 space-y-1">
+                    <div class="text-4xl md:text-5xl font-black text-uic-navy uic-headline">&lt;45ms</div>
+                    <div class="text-sm font-bold uppercase text-uic-red tracking-wider">Avg Latency</div>
+                    <p class="text-xs text-slate-600">Low-latency campus fiber network & CDN distribution</p>
                 </div>
 
             </div>
+        </div>
 
-            <!-- Slide Navigation Indicators & Controls -->
-            <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex items-center space-x-2 z-20">
-                <button id="prevSlide" class="w-9 h-9 rounded-full bg-uefa-navy/80 hover:bg-uefa-accent border border-uefa-border flex items-center justify-center text-white transition">
-                    <i class="fa-solid fa-chevron-left text-xs"></i>
-                </button>
-                <div id="slideDots" class="flex space-x-1.5 px-2">
-                    <button class="w-3 h-3 rounded-full bg-uefa-blue transition-all" data-index="0"></button>
-                    <button class="w-3 h-3 rounded-full bg-white/40 hover:bg-white transition-all" data-index="1"></button>
-                    <button class="w-3 h-3 rounded-full bg-white/40 hover:bg-white transition-all" data-index="2"></button>
-                    <button class="w-3 h-3 rounded-full bg-white/40 hover:bg-white transition-all" data-index="3"></button>
-                    <button class="w-3 h-3 rounded-full bg-white/40 hover:bg-white transition-all" data-index="4"></button>
-                </div>
-                <button id="nextSlide" class="w-9 h-9 rounded-full bg-uefa-navy/80 hover:bg-uefa-accent border border-uefa-border flex items-center justify-center text-white transition">
-                    <i class="fa-solid fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- FEATURED SECTION 1: MEN'S CLUB COMPETITIONS -->
-        <section class="space-y-4">
-            <div class="flex items-center justify-between border-b border-uefa-border pb-3">
-                <h2 class="text-xl md:text-2xl font-extrabold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-trophy text-amber-400"></i> UEFA Men's Club Competitions
-                </h2>
-                <a href="#" class="text-xs font-bold text-uefa-blue hover:underline flex items-center gap-1">
-                    View All Stories <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Card 1 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80" alt="Champions League Matchday 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Matchday+4'">
-                        <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">UCL Matchday 4</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-uefa-blue transition leading-snug mb-2">
-                                Champions League Matchday 4: Key stats and what to look out for
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                Real Madrid test their unblemished home record while Bayern face a high-stakes encounter against North London opponents.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-regular fa-clock mr-1"></i> 2 hours ago</span>
-                            <span class="text-uefa-blue font-semibold">Read briefing &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=600&q=80" alt="Europa League Briefing" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Europa+League'">
-                        <span class="absolute top-3 left-3 bg-amber-500 text-black text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">UEL Matchday 4</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition leading-snug mb-2">
-                                Europa League Matchday 4 briefing: Five sides boast perfect records
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                Lazio, Tottenham, and Anderlecht seek to prolong maximum points tallies as the group phase heats up.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-regular fa-clock mr-1"></i> 4 hours ago</span>
-                            <span class="text-amber-400 font-semibold">Read briefing &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=600&q=80" alt="Conference League Briefing" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Conference+League'">
-                        <span class="absolute top-3 left-3 bg-emerald-500 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">UECL Matchday 3</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition leading-snug mb-2">
-                                Conference League Matchday 3 briefing: Two protect perfect starts
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                Chelsea and Fiorentina aim to stay flawless while underdog contenders clash in decisive fixture rounds.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-regular fa-clock mr-1"></i> 6 hours ago</span>
-                            <span class="text-emerald-400 font-semibold">Read briefing &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=600&q=80" alt="Ballon d'Or Winner" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Ballon+d%27Or'">
-                        <span class="absolute top-3 left-3 bg-yellow-500 text-black text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">Awards 2026</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-uefa-blue transition leading-snug mb-2">
-                                Kane wins 2026 Men's Ballon d'Or after stellar individual season
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                The English forward collects the prestigious award in Paris following landmark goalscoring achievements across Europe.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-regular fa-clock mr-1"></i> Yesterday</span>
-                            <span class="text-uefa-blue font-semibold">Read article &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=600&q=80" alt="Watch Every Goal" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Watch+Goals'">
-                        <span class="absolute top-3 left-3 bg-uefa-live text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow flex items-center gap-1">
-                            <i class="fa-solid fa-play text-[8px]"></i> Highlights
-                        </span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-uefa-blue transition leading-snug mb-2">
-                                Watch every goal from Champions League Matchday 3
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                Relive all 54 goals scored during an action-packed week of European action on UEFA.tv.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-solid fa-film mr-1"></i> Video compilation</span>
-                            <span class="text-uefa-blue font-semibold">Watch now &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80" alt="Where to watch" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x350/152033/00b2ff?text=Broadcast+Guide'">
-                        <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">Broadcast Guide</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-uefa-blue transition leading-snug mb-2">
-                                Where to watch the Champions League: Official TV broadcast partners
-                            </h3>
-                            <p class="text-uefa-muted text-xs line-clamp-2">
-                                Find out where to watch UEFA Champions League matches wherever you are in the world.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-uefa-border/50 flex items-center justify-between text-[11px] text-uefa-muted">
-                            <span><i class="fa-solid fa-tv mr-1"></i> Global Listings</span>
-                            <span class="text-uefa-blue font-semibold">Find Channels &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- INTERACTIVE COEFFICIENT RANKINGS WIDGET -->
-        <section class="bg-uefa-card border border-uefa-border rounded-2xl p-6 shadow-xl">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <!-- API STATUS CARDS & SYSTEM HEALTH -->
+        <section id="status" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-xl md:text-2xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-ranking-star text-uefa-blue"></i> Official UEFA Coefficients & Rankings
-                    </h2>
-                    <p class="text-uefa-muted text-xs mt-1">Updated official rankings based on performance across European competitions.</p>
+                    <h2 class="text-2xl font-black text-uic-navy uic-headline">Live System Status</h2>
+                    <p class="text-xs text-slate-600">Real-time performance metrics for ts.api.uic.edu core microservices</p>
                 </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="text-xs font-bold text-emerald-600">All Systems Operational</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
-                <!-- Category Tabs -->
-                <div class="flex items-center space-x-1 bg-uefa-navy p-1 rounded-xl border border-uefa-border self-start md:self-auto">
-                    <button class="rank-tab-btn active px-4 py-1.5 rounded-lg text-xs font-bold transition bg-uefa-accent text-white" data-target="tab-assoc">
-                        Association Club
-                    </button>
-                    <button class="rank-tab-btn px-4 py-1.5 rounded-lg text-xs font-bold text-uefa-muted hover:text-white transition" data-target="tab-club">
-                        Men's Club
-                    </button>
-                    <button class="rank-tab-btn px-4 py-1.5 rounded-lg text-xs font-bold text-uefa-muted hover:text-white transition" data-target="tab-women">
-                        Women's Association
-                    </button>
+                <!-- Status 1 -->
+                <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-uic-navy">Directory & Auth API</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Operational</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-2">v2.1.0 • Shibboleth / OIDC</div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full w-[99.9%]"></div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Tab Content 1: Association Club Coefficients -->
-            <div id="tab-assoc" class="rank-tab-content block overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="border-b border-uefa-border text-uefa-muted text-xs uppercase tracking-wider">
-                            <th class="pb-3 font-semibold w-16">Rank</th>
-                            <th class="pb-3 font-semibold">Association</th>
-                            <th class="pb-3 font-semibold text-right">Current Season Avg</th>
-                            <th class="pb-3 font-semibold text-right">Total Points</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-uefa-border/60 font-medium">
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs inline-flex items-center justify-center">1</span></td>
-                            <td class="py-3 flex items-center gap-2 text-white"><span class="font-bold">England</span> <span class="text-xs text-uefa-muted">(ENG)</span></td>
-                            <td class="py-3 text-right text-uefa-blue font-semibold">7.944</td>
-                            <td class="py-3 text-right font-extrabold text-white">71.500</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-slate-400/20 text-slate-300 text-xs inline-flex items-center justify-center">2</span></td>
-                            <td class="py-3 flex items-center gap-2 text-white"><span class="font-bold">Germany</span> <span class="text-xs text-uefa-muted">(GER)</span></td>
-                            <td class="py-3 text-right text-uefa-blue font-semibold">7.285</td>
-                            <td class="py-3 text-right font-extrabold text-white">68.214</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-amber-700/20 text-amber-600 text-xs inline-flex items-center justify-center">3</span></td>
-                            <td class="py-3 flex items-center gap-2 text-white"><span class="font-bold">Spain</span> <span class="text-xs text-uefa-muted">(ESP)</span></td>
-                            <td class="py-3 text-right text-uefa-blue font-semibold">7.250</td>
-                            <td class="py-3 text-right font-extrabold text-white">66.418</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">4</td>
-                            <td class="py-3 flex items-center gap-2 text-white"><span class="font-bold">Portugal</span> <span class="text-xs text-uefa-muted">(POR)</span></td>
-                            <td class="py-3 text-right text-uefa-blue font-semibold">7.100</td>
-                            <td class="py-3 text-right font-extrabold text-white">58.616</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">5</td>
-                            <td class="py-3 flex items-center gap-2 text-white"><span class="font-bold">Türkiye</span> <span class="text-xs text-uefa-muted">(TUR)</span></td>
-                            <td class="py-3 text-right text-uefa-blue font-semibold">7.100</td>
-                            <td class="py-3 text-right font-extrabold text-white">43.700</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Status 2 -->
+                <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-uic-navy">Banner / Registrar Sync</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Operational</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-2">v1.8.4 • Real-time Events</div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full w-[100%]"></div>
+                    </div>
+                </div>
 
-            <!-- Tab Content 2: Men's Club Coefficients -->
-            <div id="tab-club" class="rank-tab-content hidden overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="border-b border-uefa-border text-uefa-muted text-xs uppercase tracking-wider">
-                            <th class="pb-3 font-semibold w-16">Rank</th>
-                            <th class="pb-3 font-semibold">Club</th>
-                            <th class="pb-3 font-semibold text-center">Association</th>
-                            <th class="pb-3 font-semibold text-right">Coefficient Points</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-uefa-border/60 font-medium">
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs inline-flex items-center justify-center">1</span></td>
-                            <td class="py-3 font-bold text-white">Bayern München</td>
-                            <td class="py-3 text-center text-xs text-uefa-muted">GER</td>
-                            <td class="py-3 text-right font-extrabold text-uefa-blue">131.500</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-slate-400/20 text-slate-300 text-xs inline-flex items-center justify-center">2</span></td>
-                            <td class="py-3 font-bold text-white">Arsenal</td>
-                            <td class="py-3 text-center text-xs text-uefa-muted">ENG</td>
-                            <td class="py-3 text-right font-extrabold text-uefa-blue">130.000</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white"><span class="w-6 h-6 rounded-full bg-amber-700/20 text-amber-600 text-xs inline-flex items-center justify-center">3</span></td>
-                            <td class="py-3 font-bold text-white">Real Madrid</td>
-                            <td class="py-3 text-center text-xs text-uefa-muted">ESP</td>
-                            <td class="py-3 text-right font-extrabold text-uefa-blue">126.500</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">4</td>
-                            <td class="py-3 font-bold text-white">Paris Saint-Germain</td>
-                            <td class="py-3 text-center text-xs text-uefa-muted">FRA</td>
-                            <td class="py-3 text-right font-extrabold text-uefa-blue">125.000</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">5</td>
-                            <td class="py-3 font-bold text-white">Inter Milan</td>
-                            <td class="py-3 text-center text-xs text-uefa-muted">ITA</td>
-                            <td class="py-3 text-right font-extrabold text-uefa-blue">117.000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Status 3 -->
+                <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-uic-navy">Campus Map & Facilities</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Operational</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-2">v3.0.1 • GeoJSON / GIS</div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full w-[99.8%]"></div>
+                    </div>
+                </div>
 
-            <!-- Tab Content 3: Women's Association -->
-            <div id="tab-women" class="rank-tab-content hidden overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="border-b border-uefa-border text-uefa-muted text-xs uppercase tracking-wider">
-                            <th class="pb-3 font-semibold w-16">Rank</th>
-                            <th class="pb-3 font-semibold">Association</th>
-                            <th class="pb-3 font-semibold text-right">Points</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-uefa-border/60 font-medium">
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">1</td>
-                            <td class="py-3 font-bold text-white">France (FRA)</td>
-                            <td class="py-3 text-right font-extrabold text-pink-400">88.000</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">2</td>
-                            <td class="py-3 font-bold text-white">Germany (GER)</td>
-                            <td class="py-3 text-right font-extrabold text-pink-400">77.333</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">3</td>
-                            <td class="py-3 font-bold text-white">Spain (ESP)</td>
-                            <td class="py-3 text-right font-extrabold text-pink-400">76.000</td>
-                        </tr>
-                        <tr class="hover:bg-uefa-navy/50 transition">
-                            <td class="py-3 font-bold text-white">4</td>
-                            <td class="py-3 font-bold text-white">England (ENG)</td>
-                            <td class="py-3 text-right font-extrabold text-pink-400">71.666</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Status 4 -->
+                <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-uic-navy">Canvas LMS Integrations</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Operational</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-2">v2.4.0 • LTI 1.3 Advantage</div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full w-[99.7%]"></div>
+                    </div>
+                </div>
 
-            <div class="mt-4 pt-3 border-t border-uefa-border text-right">
-                <a href="#" class="text-xs font-bold text-uefa-blue hover:underline">Full Coefficient Standings & Table Matrix &rarr;</a>
             </div>
         </section>
 
-        <!-- FEATURED SECTION 2: WOMEN'S FOOTBALL -->
-        <section class="space-y-4">
-            <div class="flex items-center justify-between border-b border-uefa-border pb-3">
-                <h2 class="text-xl md:text-2xl font-extrabold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-venus text-pink-500"></i> UEFA Women's Football
-                </h2>
-                <a href="#" class="text-xs font-bold text-pink-400 hover:underline flex items-center gap-1">
-                    Explore UWCL <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                </a>
+        <!-- EXPLORE API ENDPOINTS DOCUMENTATION -->
+        <section id="documentation" class="mb-16">
+            <div class="mb-6">
+                <span class="text-xs font-bold text-uic-red uppercase tracking-wider">Catalog & Reference</span>
+                <h2 class="text-2xl font-black text-uic-navy uic-headline">Explore Endpoints</h2>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="bg-white border border-slate-200 rounded-xl shadow-md overflow-hidden">
+                <!-- Endpoint Tabs -->
+                <div class="flex flex-wrap border-b border-slate-200 bg-slate-50 text-xs font-bold">
+                    <button class="endpoint-tab active px-5 py-3 text-uic-navy border-b-2 border-uic-red bg-white" data-target="tab-directory">
+                        <i class="fa-solid fa-users text-uic-cyan mr-1.5"></i> Directory & Profiles
+                    </button>
+                    <button class="endpoint-tab px-5 py-3 text-slate-600 hover:text-uic-navy border-b-2 border-transparent" data-target="tab-courses">
+                        <i class="fa-solid fa-book-open text-uic-cyan mr-1.5"></i> Courses & Schedules
+                    </button>
+                    <button class="endpoint-tab px-5 py-3 text-slate-600 hover:text-uic-navy border-b-2 border-transparent" data-target="tab-events">
+                        <i class="fa-solid fa-calendar-days text-uic-cyan mr-1.5"></i> Campus Events
+                    </button>
+                </div>
+
+                <!-- Endpoint Table Content -->
+                <div class="p-6">
+                    
+                    <!-- Tab Content 1: Directory -->
+                    <div id="tab-directory" class="endpoint-content space-y-4">
+                        <p class="text-xs text-slate-600">Endpoints for querying UIC directory information, student rosters, affiliation details, and NetID verification.</p>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                        <th class="p-3">Method</th>
+                                        <th class="p-3">Endpoint Path</th>
+                                        <th class="p-3">Description</th>
+                                        <th class="p-3">Auth</th>
+                                        <th class="p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded font-bold bg-green-100 text-green-800">GET</span></td>
+                                        <td class="p-3 font-bold text-uic-navy">/v2/directory/person</td>
+                                        <td class="p-3">Lookup individual record by NetID or UIN</td>
+                                        <td class="p-3"><span class="text-amber-600 font-semibold">OAuth2</span></td>
+                                        <td class="p-3"><button onclick="toggleResponse('resp-1')" class="text-uic-cyan hover:underline font-bold">Preview Payload</button></td>
+                                    </tr>
+                                    <tr id="resp-1" class="hidden bg-slate-900 text-emerald-300">
+                                        <td colspan="5" class="p-4">
+                                            <div class="font-bold text-slate-400 mb-1">// Sample JSON response for /v2/directory/person</div>
+                                            <pre class="text-[11px] font-mono">{ "netid": "sparky", "uin": "678129034", "first_name": "Sparky", "last_name": "Flames", "email": "sparky@uic.edu", "status": "Active" }</pre>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded font-bold bg-green-100 text-green-800">GET</span></td>
+                                        <td class="p-3 font-bold text-uic-navy">/v2/directory/search</td>
+                                        <td class="p-3">Search directory by name, department, or title</td>
+                                        <td class="p-3"><span class="text-slate-500">API Key</span></td>
+                                        <td class="p-3"><button onclick="toggleResponse('resp-2')" class="text-uic-cyan hover:underline font-bold">Preview Payload</button></td>
+                                    </tr>
+                                    <tr id="resp-2" class="hidden bg-slate-900 text-emerald-300">
+                                        <td colspan="5" class="p-4">
+                                            <div class="font-bold text-slate-400 mb-1">// Sample JSON response for /v2/directory/search</div>
+                                            <pre class="text-[11px] font-mono">{ "count": 2, "results": [ { "netid": "jdoe1", "name": "John Doe" }, { "netid": "jdoe2", "name": "Jane Doe" } ] }</pre>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 2: Courses -->
+                    <div id="tab-courses" class="endpoint-content hidden space-y-4">
+                        <p class="text-xs text-slate-600">Access official UIC course catalogs, section availability, location schedules, and instructor data.</p>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                        <th class="p-3">Method</th>
+                                        <th class="p-3">Endpoint Path</th>
+                                        <th class="p-3">Description</th>
+                                        <th class="p-3">Auth</th>
+                                        <th class="p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded font-bold bg-green-100 text-green-800">GET</span></td>
+                                        <td class="p-3 font-bold text-uic-navy">/v1/courses/catalog</td>
+                                        <td class="p-3">Retrieve active term course catalog listing</td>
+                                        <td class="p-3"><span class="text-slate-500">Public</span></td>
+                                        <td class="p-3"><button onclick="toggleResponse('resp-3')" class="text-uic-cyan hover:underline font-bold">Preview Payload</button></td>
+                                    </tr>
+                                    <tr id="resp-3" class="hidden bg-slate-900 text-emerald-300">
+                                        <td colspan="5" class="p-4">
+                                            <pre class="text-[11px] font-mono">{ "term": "Fall 2026", "subject": "CS", "course_number": "401", "title": "Computer Algorithms I", "credits": 4 }</pre>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content 3: Events -->
+                    <div id="tab-events" class="endpoint-content hidden space-y-4">
+                        <p class="text-xs text-slate-600">Real-time feeds for campus news, convocation updates, student organization events, and athletic calendars.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                        <th class="p-3">Method</th>
+                                        <th class="p-3">Endpoint Path</th>
+                                        <th class="p-3">Description</th>
+                                        <th class="p-3">Auth</th>
+                                        <th class="p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3"><span class="px-2 py-0.5 rounded font-bold bg-green-100 text-green-800">GET</span></td>
+                                        <td class="p-3 font-bold text-uic-navy">/v1/events/feed</td>
+                                        <td class="p-3">Fetch current UIC Today news and calendar items</td>
+                                        <td class="p-3"><span class="text-slate-500">Public</span></td>
+                                        <td class="p-3"><button onclick="toggleResponse('resp-4')" class="text-uic-cyan hover:underline font-bold">Preview Payload</button></td>
+                                    </tr>
+                                    <tr id="resp-4" class="hidden bg-slate-900 text-emerald-300">
+                                        <td colspan="5" class="p-4">
+                                            <pre class="text-[11px] font-mono">{ "event_id": "9012", "title": "UIC Convocation 2026", "location": "Credit Union 1 Arena", "date": "2026-08-25" }</pre>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPER REQUEST KEY FORM -->
+        <section id="get-key" class="bg-uic-navy text-white rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 
-                <!-- Card 1 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=500&q=80" alt="UWCL Round-up" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/500x300/152033/ec4899?text=UWCL+Roundup'">
-                        <span class="absolute top-3 left-3 bg-pink-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">UWCL</span>
-                    </div>
-                    <div class="p-4 flex-grow flex flex-col justify-between">
-                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition leading-snug mb-2">
-                            Women's Champions League Thursday round-up: Barcelona cruise
-                        </h3>
-                        <span class="text-[11px] text-uefa-muted mt-2 block"><i class="fa-regular fa-clock mr-1"></i> Matchday Highlights</span>
-                    </div>
+                <div class="lg:col-span-6 space-y-4">
+                    <span class="text-xs font-bold text-uic-cyan uppercase tracking-wider">Authentication & Access</span>
+                    <h2 class="text-3xl font-black uic-headline">Request Developer API Access</h2>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        To access restricted UIC datasets, application keys, or OAuth2 client credentials, please register your university project or application.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Instant sandbox key for development and testing</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Automatic NetID / Shibboleth Single Sign-On flow</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Rate limiting up to 10,000 req/hour for approved apps</li>
+                    </ul>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=500&q=80" alt="Top Scorer Race" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/500x300/152033/ec4899?text=Top+Scorers'">
-                        <span class="absolute top-3 left-3 bg-pink-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">Player Stats</span>
-                    </div>
-                    <div class="p-4 flex-grow flex flex-col justify-between">
-                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition leading-snug mb-2">
-                            Who's winning the Women's Champions League top-scorer race?
-                        </h3>
-                        <span class="text-[11px] text-uefa-muted mt-2 block"><i class="fa-solid fa-fire mr-1 text-amber-400"></i> Golden Boot Rankings</span>
-                    </div>
-                </div>
+                <div class="lg:col-span-6 bg-white text-uic-darkText p-6 rounded-xl shadow-lg">
+                    <form id="apiForm" onsubmit="handleFormSubmit(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-uic-navy mb-1">UIC NetID / Email *</label>
+                            <input type="text" required placeholder="netid@uic.edu" class="w-full px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-uic-red">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-uic-navy mb-1">Application Name *</label>
+                                <input type="text" required placeholder="My Campus App" class="w-full px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-uic-red">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-uic-navy mb-1">Project Scope</label>
+                                <select class="w-full px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-uic-red">
+                                    <option>Student Academic Project</option>
+                                    <option>Faculty Research</option>
+                                    <option>Administrative / Department</option>
+                                    <option>Third-Party Integration</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-uic-navy mb-1">Use Case Description</label>
+                            <textarea rows="3" placeholder="Briefly explain your application's purpose..." class="w-full px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-uic-red"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-uic-red hover:bg-red-700 text-white font-extrabold py-3 rounded transition text-xs shadow uppercase tracking-wider">
+                            Generate Sandbox Key
+                        </button>
+                    </form>
 
-                <!-- Card 3 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=500&q=80" alt="Sustainable Investment" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/500x300/152033/ec4899?text=Investment+Report'">
-                        <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">Strategy</span>
-                    </div>
-                    <div class="p-4 flex-grow flex flex-col justify-between">
-                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition leading-snug mb-2">
-                            Where women's football clubs should invest for sustainable success
-                        </h3>
-                        <span class="text-[11px] text-uefa-muted mt-2 block"><i class="fa-solid fa-chart-line mr-1"></i> Executive Insights</span>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-uefa-card hover:bg-uefa-cardHover border border-uefa-border rounded-xl overflow-hidden shadow-lg group transition duration-300 flex flex-col">
-                    <div class="relative h-40 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=500&q=80" alt="Fixtures and Results" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/500x300/152033/ec4899?text=Fixtures'">
-                        <span class="absolute top-3 left-3 bg-pink-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded shadow">Schedule</span>
-                    </div>
-                    <div class="p-4 flex-grow flex flex-col justify-between">
-                        <h3 class="text-sm font-bold text-white group-hover:text-pink-400 transition leading-snug mb-2">
-                            All Women's Champions League league phase fixtures and results
-                        </h3>
-                        <span class="text-[11px] text-uefa-muted mt-2 block"><i class="fa-regular fa-calendar-alt mr-1"></i> Full Schedule</span>
+                    <div id="apiFormSuccess" class="hidden text-center py-6 space-y-3">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-lg font-bold">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h4 class="text-base font-bold text-uic-navy">Sandbox API Key Generated!</h4>
+                        <div class="bg-slate-100 p-3 rounded font-mono text-[11px] text-uic-red break-all font-bold">
+                            uic_sbx_89f02a391c42e87ab01
+                        </div>
+                        <p class="text-[11px] text-slate-500">Key copied to clipboard. Check your UIC NetID email for OAuth credentials.</p>
                     </div>
                 </div>
 
@@ -711,90 +544,90 @@
 
     </main>
 
-    <!-- CORPORATE UEFA FOOTER -->
-    <footer class="w-full bg-[#060a12] border-t border-uefa-border text-xs text-uefa-muted mt-12 py-10">
-        <div class="max-w-7xl mx-auto px-4 space-y-8">
-            
-            <!-- Top Footer Brand & Social Links -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-uefa-border pb-6">
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl font-black tracking-widest text-white">UEFA<span class="text-xs text-uefa-blue font-normal">.COM</span></span>
-                    <span class="text-uefa-border">|</span>
-                    <span class="text-xs text-uefa-muted">Union of European Football Associations</span>
+    <!-- FOOTER (MATCHING INDEX_4.HTML UIC FOOTER STRUCTURE) -->
+    <footer class="bg-black text-white text-xs mt-auto border-t-4 border-uic-red">
+        
+        <!-- Main Footer Links Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Col 1: UIC Brand Address -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-uic-red rounded-full flex items-center justify-center text-white font-black text-xl">
+                            UIC
+                        </div>
+                        <span class="font-extrabold text-sm tracking-tight">University of Illinois Chicago</span>
+                    </div>
+                    <div class="text-slate-400 space-y-1 text-[11px]">
+                        <div>Technology Solutions (IT)</div>
+                        <div>1200 West Harrison St.</div>
+                        <div>Chicago, Illinois 60607</div>
+                        <div class="text-white font-bold pt-1">(312) 996-7000</div>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-4 text-base">
-                    <a href="#" class="w-8 h-8 rounded-full bg-uefa-card hover:bg-uefa-blue hover:text-uefa-navy flex items-center justify-center transition" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-uefa-card hover:bg-uefa-blue hover:text-uefa-navy flex items-center justify-center transition" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-uefa-card hover:bg-uefa-blue hover:text-uefa-navy flex items-center justify-center transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-uefa-card hover:bg-uefa-blue hover:text-uefa-navy flex items-center justify-center transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-uefa-card hover:bg-uefa-blue hover:text-uefa-navy flex items-center justify-center transition" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-            </div>
 
-            <!-- Footer Columns -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-2">
+                <!-- Col 2: Developer Tools -->
                 <div>
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Competitions</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">UEFA Champions League</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Europa League</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Conference League</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Women's Champions League</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA EURO 2028</a></li>
+                    <h3 class="font-bold text-uic-cyan uppercase tracking-wider mb-3 text-xs">API Resources</h3>
+                    <ul class="space-y-2 text-slate-300 text-[11px]">
+                        <li><a href="https://ts.api.uic.edu" class="hover:text-uic-red transition">API Gateway Index</a></li>
+                        <li><a href="#documentation" class="hover:text-uic-red transition">Swagger / OpenAPI Docs</a></li>
+                        <li><a href="#status" class="hover:text-uic-red transition">API Status Dashboard</a></li>
+                        <li><a href="https://it.uic.edu" target="_blank" class="hover:text-uic-red transition">UIC Technology Solutions</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Development</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">UEFA HatTrick</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Academy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Grassroots Football</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Foundation for Children</a></li>
-                        <li><a href="#" class="hover:text-white transition">Financial Fair Play</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">About UEFA</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">Organisation Structure</a></li>
-                        <li><a href="#" class="hover:text-white transition">President & Executive Committee</a></li>
-                        <li><a href="#" class="hover:text-white transition">55 National Associations</a></li>
-                        <li><a href="#" class="hover:text-white transition">Careers at UEFA</a></li>
-                        <li><a href="#" class="hover:text-white transition">Official Publications</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Services & Store</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">Ticketing & Hospitality</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Official Store</a></li>
-                        <li><a href="#" class="hover:text-white transition">UEFA Gaming Portal</a></li>
-                        <li><a href="#" class="hover:text-white transition">Broadcasters Portal</a></li>
-                        <li><a href="#" class="hover:text-white transition">Media Accreditation</a></li>
-                    </ul>
-                </div>
-            </div>
 
-            <!-- Copyright & Legal -->
-            <div class="pt-6 border-t border-uefa-border flex flex-col md:flex-row items-center justify-between gap-4 text-[11px]">
-                <div class="flex flex-wrap gap-4 text-uefa-muted">
-                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition">Terms & Conditions</a>
-                    <a href="#" class="hover:text-white transition">Cookie Policy</a>
-                    <a href="#" class="hover:text-white transition">Cookie Settings</a>
-                    <a href="#" class="hover:text-white transition">Contact Us</a>
+                <!-- Col 3: UIC Quick Tools -->
+                <div>
+                    <h3 class="font-bold text-uic-cyan uppercase tracking-wider mb-3 text-xs">Campus Tools</h3>
+                    <ul class="space-y-2 text-slate-300 text-[11px]">
+                        <li><a href="https://canvas.uic.edu" target="_blank" class="hover:text-uic-red transition">Canvas LMS</a></li>
+                        <li><a href="https://my.uic.edu" target="_blank" class="hover:text-uic-red transition">my.UIC Portal</a></li>
+                        <li><a href="https://outlook.uic.edu" target="_blank" class="hover:text-uic-red transition">UIC Email (Outlook)</a></li>
+                        <li><a href="https://maps.uic.edu" target="_blank" class="hover:text-uic-red transition">Campus Maps</a></li>
+                    </ul>
                 </div>
-                <p>&copy; 1998-2026 UEFA. All rights reserved. The UEFA word, logo and all marks related to UEFA competitions are protected by trademarks and/or copyright of UEFA.</p>
-            </div>
 
+                <!-- Col 4: Social Icons & Contact -->
+                <div class="space-y-3">
+                    <h3 class="font-bold text-uic-cyan uppercase tracking-wider mb-3 text-xs">Connect With UIC</h3>
+                    <div class="flex items-center space-x-3 text-base">
+                        <a href="https://facebook.com/uic.edu" target="_blank" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-uic-red flex items-center justify-center transition" title="Facebook"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="https://twitter.com/thisisuic" target="_blank" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-uic-red flex items-center justify-center transition" title="X/Twitter"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+                        <a href="https://instagram.com/thisisuic" target="_blank" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-uic-red flex items-center justify-center transition" title="Instagram"><i class="fa-brands fa-instagram text-xs"></i></a>
+                        <a href="https://linkedin.com/school/thisisuic" target="_blank" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-uic-red flex items-center justify-center transition" title="LinkedIn"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    </div>
+                    <div class="pt-2 text-[11px] text-slate-400">
+                        Need developer support? Email <a href="mailto:api-support@uic.edu" class="text-uic-cyan hover:underline font-mono">api-support@uic.edu</a>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <!-- Copyright Legal Bar -->
+        <div class="bg-slate-950 py-4 border-t border-slate-900 text-[11px] text-slate-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-2">
+                <div>
+                    &copy; 2026 The Board of Trustees of the University of Illinois | <a href="https://www.vpaa.uillinois.edu/resources/web_privacy" target="_blank" class="hover:text-slate-300">Privacy Statement</a>
+                </div>
+                <div class="flex items-center space-x-3 text-[10px]">
+                    <a href="https://www.uillinois.edu" target="_blank" class="hover:text-slate-300">U of I System</a>
+                    <span>|</span>
+                    <a href="https://illinois.edu" target="_blank" class="hover:text-slate-300">Urbana-Champaign</a>
+                    <span>|</span>
+                    <a href="https://uis.edu" target="_blank" class="hover:text-slate-300">Springfield</a>
+                </div>
+            </div>
+        </div>
+
     </footer>
 
     <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
-            // 1. Mobile Menu Toggle
+            // Mobile Menu Drawer Toggle
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             if (mobileMenuBtn && mobileMenu) {
@@ -803,108 +636,45 @@
                 });
             }
 
-            // 2. Hero Carousel Logic
-            const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('#slideDots button');
-            const prevBtn = document.getElementById('prevSlide');
-            const nextBtn = document.getElementById('nextSlide');
-            let currentSlide = 0;
-            let slideInterval;
+            // Endpoint Tab Switching
+            const endpointTabs = document.querySelectorAll('.endpoint-tab');
+            const endpointContents = document.querySelectorAll('.endpoint-content');
 
-            function goToSlide(index) {
-                slides[currentSlide].classList.add('opacity-0', 'pointer-events-none');
-                slides[currentSlide].classList.remove('opacity-100');
-                dots[currentSlide].classList.remove('bg-uefa-blue');
-                dots[currentSlide].classList.add('bg-white/40');
-
-                currentSlide = (index + slides.length) % slides.length;
-
-                slides[currentSlide].classList.remove('opacity-0', 'pointer-events-none');
-                slides[currentSlide].classList.add('opacity-100');
-                dots[currentSlide].classList.add('bg-uefa-blue');
-                dots[currentSlide].classList.remove('bg-white/40');
-            }
-
-            function startAutoplay() {
-                slideInterval = setInterval(() => {
-                    goToSlide(currentSlide + 1);
-                }, 6000);
-            }
-
-            function stopAutoplay() {
-                clearInterval(slideInterval);
-            }
-
-            if (slides.length > 0) {
-                nextBtn?.addEventListener('click', () => {
-                    stopAutoplay();
-                    goToSlide(currentSlide + 1);
-                    startAutoplay();
-                });
-
-                prevBtn?.addEventListener('click', () => {
-                    stopAutoplay();
-                    goToSlide(currentSlide - 1);
-                    startAutoplay();
-                });
-
-                dots.forEach((dot, idx) => {
-                    dot.addEventListener('click', () => {
-                        stopAutoplay();
-                        goToSlide(idx);
-                        startAutoplay();
-                    });
-                });
-
-                startAutoplay();
-            }
-
-            // 3. Matches Horizontal Scroll Rail
-            const matchRail = document.getElementById('matchRail');
-            const scrollLeftBtn = document.getElementById('scrollMatchLeft');
-            const scrollRightBtn = document.getElementById('scrollMatchRight');
-
-            if (matchRail && scrollLeftBtn && scrollRightBtn) {
-                scrollLeftBtn.addEventListener('click', () => {
-                    matchRail.scrollBy({ left: -300, behavior: 'smooth' });
-                });
-                scrollRightBtn.addEventListener('click', () => {
-                    matchRail.scrollBy({ left: 300, behavior: 'smooth' });
-                });
-            }
-
-            // 4. Coefficient Rankings Tab Switcher
-            const rankTabs = document.querySelectorAll('.rank-tab-btn');
-            const rankContents = document.querySelectorAll('.rank-tab-content');
-
-            rankTabs.forEach(tab => {
+            endpointTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    const targetId = tab.getAttribute('data-target');
-
-                    // Reset Tabs
-                    rankTabs.forEach(t => {
-                        t.classList.remove('bg-uefa-accent', 'text-white');
-                        t.classList.add('text-uefa-muted');
+                    endpointTabs.forEach(t => {
+                        t.classList.remove('active', 'text-uic-navy', 'border-uic-red', 'bg-white');
+                        t.classList.add('text-slate-600', 'border-transparent');
                     });
+                    tab.classList.add('active', 'text-uic-navy', 'border-uic-red', 'bg-white');
+                    tab.classList.remove('text-slate-600', 'border-transparent');
 
-                    // Activate Clicked Tab
-                    tab.classList.add('bg-uefa-accent', 'text-white');
-                    tab.classList.remove('text-uefa-muted');
-
-                    // Show Target Content
-                    rankContents.forEach(content => {
-                        if (content.id === targetId) {
-                            content.classList.remove('hidden');
-                            content.classList.add('block');
+                    const target = tab.getAttribute('data-target');
+                    endpointContents.forEach(c => {
+                        if (c.id === target) {
+                            c.classList.remove('hidden');
                         } else {
-                            content.classList.add('hidden');
-                            content.classList.remove('block');
+                            c.classList.add('hidden');
                         }
                     });
                 });
             });
-
         });
+
+        // Toggle Payload Preview rows in endpoint documentation
+        function toggleResponse(id) {
+            const row = document.getElementById(id);
+            if (row) {
+                row.classList.toggle('hidden');
+            }
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('apiForm').classList.add('hidden');
+            document.getElementById('apiFormSuccess').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
